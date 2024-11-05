@@ -17,7 +17,9 @@ const productSchema = new Schema({
     type: String,
   },
   category: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    required: true,
   },
   stock: {
     type: Number,
@@ -26,4 +28,5 @@ const productSchema = new Schema({
 });
 
 const Product = mongoose.model("Product", productSchema);
+
 export default Product;
