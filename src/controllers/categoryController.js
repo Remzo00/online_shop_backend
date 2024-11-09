@@ -1,5 +1,9 @@
 import { getAllCategories } from "../services/categoryService.js";
-import { getCategoryForProduct } from "../services/productService.js";
+import {
+  getCategoryForProduct,
+  addCategory,
+} from "../services/productService.js";
+import mongoose from "mongoose";
 
 export const getCategories = async (req, res) => {
   try {
@@ -15,12 +19,35 @@ export const getCategories = async (req, res) => {
 export const getCategoryByProduct = async (req, res) => {
   try {
     const { productId } = req.params;
-    const category = await getCategoryForProduct(productId);
-    res.status(200).json(category);
+    const product = await getCategoryForProduct(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(product);
   } catch (error) {
     res.status(400).json({
       message: "Error getting category for product",
       error: error.message,
     });
+  }
+};
+
+export const createCategory = async (req, res) => {
+  try {
+    const { productId, category } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ message: "Invalid product ID format" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(category)) {
+      return res.status(400).json({ message: "Invalid category ID format" });
+    }
+
+    const updatedProduct = await addCategory(productId, category);
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
