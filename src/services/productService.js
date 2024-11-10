@@ -11,9 +11,10 @@ export const getProductById = async (id) => {
   return product;
 };
 
-export const getCategoryForProduct = async (productId) => {
-  const product = await Product.findById(productId).populate("category");
-  return product;
+export const getProductsByCategory = async (categoryId) => {
+  const filter = categoryId ? { category: categoryId } : {};
+  const products = await Product.find(filter).populate("category");
+  return products;
 };
 
 export const addCategory = async (productId, categoryId) => {

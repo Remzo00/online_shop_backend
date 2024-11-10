@@ -1,4 +1,8 @@
-import { getAllProducts, getProductById } from "../services/productService.js";
+import {
+  getAllProducts,
+  getProductById,
+  getProductsByCategory,
+} from "../services/productService.js";
 
 export async function getProducts(req, res) {
   try {
@@ -23,5 +27,17 @@ export async function getProduct(req, res) {
     res
       .status(400)
       .json({ message: "Error getting product", error: error.message });
+  }
+}
+
+export async function fetchProductsByCategory(req, res) {
+  try {
+    const { category } = req.query;
+    const products = category
+      ? await getProductsByCategory(category)
+      : await getAllProducts();
+    res.json({ products });
+  } catch (error) {
+    res.status(500).json({ message: "Greška prilikom dohvaćanja proizvoda." });
   }
 }
