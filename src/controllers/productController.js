@@ -2,6 +2,7 @@ import {
   getAllProducts,
   getProductById,
   getProductsByCategory,
+  getProductsByCategoryName,
 } from "../services/productService.js";
 
 export async function getProducts(req, res) {
@@ -34,10 +35,14 @@ export async function fetchProductsByCategory(req, res) {
   try {
     const { category } = req.query;
     const products = category
-      ? await getProductsByCategory(category)
+      ? await getProductsByCategoryName(category)
       : await getAllProducts();
     res.json({ products });
   } catch (error) {
-    res.status(500).json({ message: "Greška prilikom dohvaćanja proizvoda." });
+    res
+      .status(500)
+      .json({
+        message: error.message || "Greška prilikom dohvaćanja proizvoda.",
+      });
   }
 }
