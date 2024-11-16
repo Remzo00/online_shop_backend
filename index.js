@@ -6,6 +6,7 @@ import authRouter from "./src/routes/authRoutes.js";
 import productRouter from "./src/routes/productRoutes.js";
 import categoryRouter from "./src/routes/categoryRoutes.js";
 import searchRouter from "./src/routes/searchRoutes.js";
+import orderRouter from "./src/routes/orderRoutes.js";
 
 dotenv.config();
 
@@ -18,8 +19,9 @@ app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(authRouter);
 app.use(productRouter);
-app.use(categoryRouter);
+// app.use(categoryRouter);
 app.use(searchRouter);
+app.use(orderRouter);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
